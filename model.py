@@ -1,9 +1,9 @@
 import numpy as np
 import torch.nn as nn
 import torch.optim as optim
-from collctions import deque
-import random
-import emulator
+from collections import deque
+from emulator import Emulator
+from replayMemory import ReplayMemory
 
 class DQN(nn.Module):
     def __init__(self):
@@ -25,8 +25,8 @@ class DQN(nn.Module):
         return out
 
 
-
-    def compute_reward(prev_board, move_score, done):
+    #computes reward a
+    def compute_reward(curr_board, prev_board, move_score, done):
         reward = 0.0
 
         #good boy (merge reward)
@@ -36,7 +36,7 @@ class DQN(nn.Module):
         reward -= 0.1
 
         #no time waste
-        if move_score == 0 and np.array_equal(prev_board, arr):
+        if move_score == 0 and np.array_equal(prev_board, curr_board):
             reward -= 1.0
 
         #Failure, belt time :3
@@ -47,22 +47,44 @@ class DQN(nn.Module):
         return reward
     
 
+    '''
+    very much wip help D:
+    '''
+    
+    def get_action(self, state):
+        #get action from model
+        output = self.forward(state)
+        return output
+
     #calculates loss based on the reward
     def calculate_loss(self, reward):
-
+        pass
     
     #update the model based on the loss
-    def update_model(self, loss):
-        #convert reward to loss
-
-
-
+    def update_model(self, reward):
+        loss = calculate_loss(self,reward)
+        #backprop
 
     #run through one episode
     def run_episode(state, self):
         #create new state
         state = Emulator()
         state.startGame()
+
+        while(not state.isGameOver()):
+            #get action
+            action = self.get_action(state)
+            #take action
+            prev_board = state.board.copy()
+            move_score = state.move(action)
+            curr_board = state.board.copy()
+            done = state.isGameOver()
+            #compute reward
+            reward = self.compute_reward(curr_board, prev_board, move_score, done)
+            #update model (backpropagate)
+            self.update_model(reward)
+            #save to replay memory
+
     
         
 

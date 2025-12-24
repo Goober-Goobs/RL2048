@@ -82,7 +82,7 @@ class Emulator:
         #if right
         score = 0
         
-        valids = validMerge()
+        valids = self.validMerge()
         if((0 not in valids and (n == 0 or n == 2)) or (1 not in valids and (n==1 or n==3))):
             print("invalid input, ignored.")
             return 0
@@ -98,7 +98,7 @@ class Emulator:
                         #move element to the right until another value/border is reached
                         move = True
                         while(move):
-                            swap(i,jPos,i,jPos+1)
+                            self.swap(i,jPos,i,jPos+1)
                             jPos+=1
                             if(jPos == 3 or self.arr[i,jPos+1] != 0):
                                 move = False
@@ -106,7 +106,7 @@ class Emulator:
                     #if j <= 2, and [i][j] == [i][j+1], merge (add the two, make [i][j+1] equal to total, [i][j] = 0)
                     if(self.arr[i][jPos] != 0 and jPos < 3 and merged[i,jPos+1]):
                         oldscore = score
-                        score+=merge(i,jPos,i,jPos+1,1)
+                        score+=self.merge(i,jPos,i,jPos+1,1)
                         if(oldscore != score):
                             merged[i,jPos+1] = False
         
@@ -121,7 +121,7 @@ class Emulator:
                         #move element to the right until another value/border is reached
                         move = True
                         while(move):
-                            swap(jPos,i,jPos+1,i)
+                            self.swap(jPos,i,jPos+1,i)
                             jPos+=1
                             if(jPos == 3 or self.arr[jPos+1,i] != 0):
                                 move = False
@@ -129,7 +129,7 @@ class Emulator:
                     #if j <= 2, and [j][i] == [j+1][i], merge (add the two, make [j+1][i] equal to total, [j][i] = 0)
                     if(self.arr[jPos][i] != 0 and jPos < 3 and merged[jPos+1,i]):
                         oldscore = score
-                        score+=merge(jPos,i,jPos+1,i,1)
+                        score+=self.merge(jPos,i,jPos+1,i,1)
                         if(oldscore != score):
                             merged[jPos+1,i] = False
         
@@ -145,14 +145,14 @@ class Emulator:
                         #move element to left until another value/border is reached
                         move = True
                         while(move):
-                            swap(i, jPos, i, jPos-1)
+                            self.swap(i, jPos, i, jPos-1)
                             jPos -= 1
                             if(jPos == 0 or self.arr[i, jPos-1] != 0):
                                 move = False
                     #if jPos > 0 [i][j] == [i][j-1], merge (add the two, make [i, j-1] equal to total, [i][j] = 0)
                     if(self.arr[i,jPos] != 0 and jPos > 0 and merged[i,jPos-1]):
                         oldscore = score
-                        score+=merge(i,jPos-1, i, jPos, 0)
+                        score+=self.merge(i,jPos-1, i, jPos, 0)
                         if(oldscore != score):
                             merged[i,jPos-1] = False
 
@@ -167,18 +167,18 @@ class Emulator:
                         #move element to the right until another value is reacher
                         move = True
                         while(move):
-                            swap(jPos, i, jPos-1, i)
+                            self.swap(jPos, i, jPos-1, i)
                             jPos -= 1
                             if(jPos == 0 or self.arr[jPos-1,i] != 0):
                                 move = False
                     #if jPos > 0 and [j][i] == [j-1][i], merge (add the two, make [j-1,i] = total, [j][i] = 0)
                     if(self.arr[jPos, i] != 0 and jPos > 0 and merged[jPos-1,i]):
                         oldscore = score
-                        score+= merge(jPos-1,i,jPos,i,0)
+                        score+= self.merge(jPos-1,i,jPos,i,0)
                         if(oldscore != score):
                             merged[jPos-1,i] = False                    
 
-        newNum()
+        self.newNum()
         return score
 
     #start the game
