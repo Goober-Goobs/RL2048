@@ -187,6 +187,5 @@ while(available() != -1 and not(-1 in validMerge())):
 
 print(f"Final Score: {score}")
 
-print(f"\n\n\n\n\n\n----------------------FINISHED----------------------\n\n\n\n\n\n")
 
 
