@@ -202,12 +202,13 @@ class Emulator:
 
 
 #actual user interation lmfao
+arr = Emulator()
+arr.startGame()
 
-# while(available() != -1 and not(-1 in validMerge())):
-#     print(f"score: {score}\n",arr)
-#     moveInput = int(input("which direction? (0: right, 1: down, 2: left, 3: up): "))
-#     score+=move(moveInput)
-# print(f"Final Score: {score}")
-
+while(arr.available() != -1 and not(-1 in arr.validMerge())):
+    print(f"score: {arr.score}\n",arr.arr)
+    moveInput = int(input("which direction? (0: right, 1: down, 2: left, 3: up): "))
+    arr.score+=arr.move(moveInput)
+print(f"Final Score: {arr.score}")
 
 
